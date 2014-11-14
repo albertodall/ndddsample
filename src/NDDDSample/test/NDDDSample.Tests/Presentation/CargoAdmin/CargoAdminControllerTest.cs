@@ -1,17 +1,14 @@
 namespace NDDDSample.Tests.Presentation.CargoAdmin
 {
-    #region Usings
-
     using System;
     using System.Collections.Generic;
+    using System.Web;
     using System.Web.Routing;
     using Interfaces.BookingRemoteService.Common;
     using Interfaces.BookingRemoteService.Common.Dto;
     using Moq;
     using NUnit.Framework;
     using Web.Controllers.CargoAdmin;
-
-    #endregion
 
     [TestFixture, Category(UnitTestCategories.Controllers)]
     public class CargoAdminControllerTest

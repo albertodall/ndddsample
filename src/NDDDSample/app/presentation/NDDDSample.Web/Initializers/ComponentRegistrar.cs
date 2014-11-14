@@ -1,18 +1,13 @@
 namespace NDDDSample.Web.Initializers
 {
-    #region Usings
-
     using System;
     using System.ServiceModel;
-
     using Castle.Facilities.WcfIntegration;
     using Castle.Facilities.WcfIntegration.Behaviors;
     using Castle.MicroKernel.Registration;
     using Castle.Windsor;
     using NDDDSample.Infrastructure.Utils;
     using NDDDSample.Interfaces.BookingRemoteService.Common;
-
-    #endregion
 
     public static class ComponentRegistrar
     {
@@ -32,10 +27,12 @@ namespace NDDDSample.Web.Initializers
         private static void AddCustomRepositoriesTo(IWindsorContainer container)
         {
             container.Register(
-                AllTypes.Pick()
+                Classes
                     //Scan repository assembly for domain model interfaces implementation
                     .FromAssemblyNamed("NDDDSample.Persistence.NHibernate")
-                    .WithService.FirstNonGenericCoreInterface("NDDDSample.Domain.Model"));
+                    .InNamespace("NDDDSample.Persistence.NHibernate")
+                    .WithServiceFirstInterface());
+                    //.WithService.FirstNonGenericCoreInterface("NDDDSample.Domain.Model"));
 
             container.AddFacility<WcfFacility>();
 
@@ -44,10 +41,11 @@ namespace NDDDSample.Web.Initializers
                 Component.For<IBookingServiceFacade>()                
                     .Named("bookingServiceFacade")
                     .LifeStyle.Transient
-                .ActAs(DefaultClientModel
-                    .On(WcfEndpoint.BoundTo(new NetTcpBinding())
+                    .AsWcfClient(DefaultClientModel
+                        .On(WcfEndpoint.BoundTo(new NetTcpBinding())
                         .At(String.Format("net.tcp://{0}/BookingServiceFacade", bookingRemoteServiceWorkerRoleEndpoint))
-                        )));            
+                    )
+            ));            
         }
     }
 }

@@ -1,10 +1,6 @@
 namespace NDDDSample.Tests.Presentation
 {
-    #region Usings
-
     using System.Web.Mvc;
-
-    #endregion
 
     public static class ControllerTestExtentions
     {

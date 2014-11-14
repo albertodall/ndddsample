@@ -1,7 +1,5 @@
 ﻿namespace NDDDSample.Web
 {
-    #region Usings
-
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -12,9 +10,6 @@
 
     using Microsoft.WindowsAzure.ServiceRuntime;
 
-    using MvcContrib.Castle;
-
-    #endregion
 
     // Note: For instructions on enabling IIS6 or IIS7 classic mode, 
     // visit http://go.microsoft.com/?LinkId=9394801

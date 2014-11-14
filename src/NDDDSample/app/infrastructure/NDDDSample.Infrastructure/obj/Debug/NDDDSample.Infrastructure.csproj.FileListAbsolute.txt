@@ -1,0 +1,9 @@
+D:\Programming\GitHub\ndddsample\ndddsample\src\NDDDSample\app\infrastructure\NDDDSample.Infrastructure\bin\Debug\NDDDSample.Infrastructure.dll
+D:\Programming\GitHub\ndddsample\ndddsample\src\NDDDSample\app\infrastructure\NDDDSample.Infrastructure\bin\Debug\NDDDSample.Infrastructure.pdb
+D:\Programming\GitHub\ndddsample\ndddsample\src\NDDDSample\app\infrastructure\NDDDSample.Infrastructure\bin\Debug\Castle.Core.dll
+D:\Programming\GitHub\ndddsample\ndddsample\src\NDDDSample\app\infrastructure\NDDDSample.Infrastructure\bin\Debug\Castle.DynamicProxy2.dll
+D:\Programming\GitHub\ndddsample\ndddsample\src\NDDDSample\app\infrastructure\NDDDSample.Infrastructure\bin\Debug\Castle.MicroKernel.dll
+D:\Programming\GitHub\ndddsample\ndddsample\src\NDDDSample\app\infrastructure\NDDDSample.Infrastructure\bin\Debug\Castle.Windsor.dll
+D:\Programming\GitHub\ndddsample\ndddsample\src\NDDDSample\app\infrastructure\NDDDSample.Infrastructure\bin\Debug\log4net.dll
+D:\Programming\GitHub\ndddsample\ndddsample\src\NDDDSample\app\infrastructure\NDDDSample.Infrastructure\obj\Debug\NDDDSample.Infrastructure.dll
+D:\Programming\GitHub\ndddsample\ndddsample\src\NDDDSample\app\infrastructure\NDDDSample.Infrastructure\obj\Debug\NDDDSample.Infrastructure.pdb

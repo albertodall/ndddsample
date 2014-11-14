@@ -1,0 +1,14 @@
+D:\Programming\GitHub\ndddsample\ndddsample\src\NDDDSample\app\application\NDDDSample.Application\bin\Debug\NDDDSample.Application.dll
+D:\Programming\GitHub\ndddsample\ndddsample\src\NDDDSample\app\application\NDDDSample.Application\bin\Debug\NDDDSample.Application.pdb
+D:\Programming\GitHub\ndddsample\ndddsample\src\NDDDSample\app\application\NDDDSample.Application\bin\Debug\NDDDSample.Domain.dll
+D:\Programming\GitHub\ndddsample\ndddsample\src\NDDDSample\app\application\NDDDSample.Application\bin\Debug\NDDDSample.Infrastructure.dll
+D:\Programming\GitHub\ndddsample\ndddsample\src\NDDDSample\app\application\NDDDSample.Application\bin\Debug\log4net.dll
+D:\Programming\GitHub\ndddsample\ndddsample\src\NDDDSample\app\application\NDDDSample.Application\bin\Debug\Castle.Windsor.dll
+D:\Programming\GitHub\ndddsample\ndddsample\src\NDDDSample\app\application\NDDDSample.Application\bin\Debug\Castle.MicroKernel.dll
+D:\Programming\GitHub\ndddsample\ndddsample\src\NDDDSample\app\application\NDDDSample.Application\bin\Debug\Castle.DynamicProxy2.dll
+D:\Programming\GitHub\ndddsample\ndddsample\src\NDDDSample\app\application\NDDDSample.Application\bin\Debug\Castle.Core.dll
+D:\Programming\GitHub\ndddsample\ndddsample\src\NDDDSample\app\application\NDDDSample.Application\bin\Debug\NDDDSample.Domain.pdb
+D:\Programming\GitHub\ndddsample\ndddsample\src\NDDDSample\app\application\NDDDSample.Application\bin\Debug\NDDDSample.Infrastructure.pdb
+D:\Programming\GitHub\ndddsample\ndddsample\src\NDDDSample\app\application\NDDDSample.Application\obj\Debug\NDDDSample.Application.csprojResolveAssemblyReference.cache
+D:\Programming\GitHub\ndddsample\ndddsample\src\NDDDSample\app\application\NDDDSample.Application\obj\Debug\NDDDSample.Application.dll
+D:\Programming\GitHub\ndddsample\ndddsample\src\NDDDSample\app\application\NDDDSample.Application\obj\Debug\NDDDSample.Application.pdb

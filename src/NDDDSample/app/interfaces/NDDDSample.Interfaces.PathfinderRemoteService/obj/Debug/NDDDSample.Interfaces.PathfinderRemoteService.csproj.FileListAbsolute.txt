@@ -1,0 +1,7 @@
+D:\Programming\GitHub\ndddsample\ndddsample\src\NDDDSample\app\interfaces\NDDDSample.Interfaces.PathfinderRemoteService\bin\Debug\NDDDSample.Interfaces.PathfinderRemoteService.dll
+D:\Programming\GitHub\ndddsample\ndddsample\src\NDDDSample\app\interfaces\NDDDSample.Interfaces.PathfinderRemoteService\bin\Debug\NDDDSample.Interfaces.PathfinderRemoteService.pdb
+D:\Programming\GitHub\ndddsample\ndddsample\src\NDDDSample\app\interfaces\NDDDSample.Interfaces.PathfinderRemoteService\bin\Debug\NDDDSample.Interfaces.PathfinderRemoteService.Common.dll
+D:\Programming\GitHub\ndddsample\ndddsample\src\NDDDSample\app\interfaces\NDDDSample.Interfaces.PathfinderRemoteService\bin\Debug\NDDDSample.Interfaces.PathfinderRemoteService.Common.pdb
+D:\Programming\GitHub\ndddsample\ndddsample\src\NDDDSample\app\interfaces\NDDDSample.Interfaces.PathfinderRemoteService\obj\Debug\NDDDSample.Interfaces.PathfinderRemoteService.csprojResolveAssemblyReference.cache
+D:\Programming\GitHub\ndddsample\ndddsample\src\NDDDSample\app\interfaces\NDDDSample.Interfaces.PathfinderRemoteService\obj\Debug\NDDDSample.Interfaces.PathfinderRemoteService.dll
+D:\Programming\GitHub\ndddsample\ndddsample\src\NDDDSample\app\interfaces\NDDDSample.Interfaces.PathfinderRemoteService\obj\Debug\NDDDSample.Interfaces.PathfinderRemoteService.pdb
