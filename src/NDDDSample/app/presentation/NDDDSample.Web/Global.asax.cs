@@ -9,21 +9,25 @@
     using Initializers;
 
     using Microsoft.WindowsAzure.ServiceRuntime;
+    using Castle.MicroKernel.Registration;
+    using Castle.Windsor;
+    using System.Web;
 
-
-    // Note: For instructions on enabling IIS6 or IIS7 classic mode, 
-    // visit http://go.microsoft.com/?LinkId=9394801
-
-    public class MvcApplication : Rhino.Commons.HttpModules.UnitOfWorkApplication
+    public class MvcApplication : HttpApplication, IContainerAccessor
     {
-        public override void Application_Start(object sender, EventArgs e)
-        {
-            base.Application_Start(sender, e);
+        private readonly IWindsorContainer _container = new WindsorContainer();
 
+        protected void Application_Start()
+        {
             log4net.Config.XmlConfigurator.Configure();
             InitializeServiceLocator();
             RegisterRoutes(RouteTable.Routes);
             NhInitializer.Init();
+        }
+
+        protected void Application_End()
+        {
+            _container.Dispose();
         }
 
         /// <summary>
@@ -33,10 +37,11 @@
         /// </summary>
         protected virtual void InitializeServiceLocator()
         {
-            ControllerBuilder.Current.SetControllerFactory(new WindsorControllerFactory(Container));
-            Container.RegisterControllers(typeof (HomeController).Assembly);
+            _container.Register(Classes.FromThisAssembly().BasedOn<BaseController>().LifestyleTransient());
 
             RegisterDependencies();
+
+            ControllerBuilder.Current.SetControllerFactory(new WindsorControllerFactory(_container));
 
             //TODO: Register repositories and services for controllers
            // ServiceLocator.SetLocatorProvider(() => new WindsorServiceLocator(Container));
@@ -78,11 +83,24 @@
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
+            routes.IgnoreRoute("{*favicon}", new { favicon = @"(.*/)?favicon.ico(/.*)?" }); 
+
             routes.MapRoute(
                 "Default", // Route name
                 "{controller}/{action}/{id}", // URL with parameters
                 new {controller = "Home", action = "Index", id = ""} // Parameter defaults
                 );
+        }
+
+        public IWindsorContainer Container
+        {
+            get 
+            {
+                lock (_container)
+                {
+                    return _container;
+                }
+            }
         }
     }
 }
