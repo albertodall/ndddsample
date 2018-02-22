@@ -23,7 +23,6 @@
         private readonly DateTime registrationTime;
         private readonly HandlingType type;
         private readonly Voyage voyage;
-        private int id;
 
         #endregion
 

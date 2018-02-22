@@ -1,16 +1,12 @@
 namespace NDDDSample.Domain.Model.Handlings
 {
-    #region Usings
-
     using Shared;
-
-    #endregion
 
     /// <summary>
     ///Handling event type. Either requires or prohibits a carrier movement
     ///association, it's never optional.
     /// </summary>
-    public class HandlingType : Enumeration, IValueObject<HandlingType>
+    public class HandlingType : Enumeration
     {
         public static readonly HandlingType CLAIM = new HandlingType("CLAIM", false);
         public static readonly HandlingType CUSTOMS = new HandlingType("CUSTOMS", false);
@@ -31,20 +27,6 @@ namespace NDDDSample.Domain.Model.Handlings
         {
             this.voyageRequired = voyageRequired;
         }
-
-        #region IValueObject<HandlingType> Members
-
-        /// <summary>
-        /// Value objects compare by the values of their attributes, they don't have an identity.
-        /// </summary>
-        /// <param name="other">The other value object.</param>
-        /// <returns>true if the given value object's and this value object's attributes are the same.</returns>
-        public bool SameValueAs(HandlingType other)
-        {
-            return other != null && Equals(other);
-        }
-
-        #endregion
 
         /// <summary>
         /// return True if a voyage association is required for this event type.

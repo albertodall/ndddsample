@@ -20,8 +20,6 @@ namespace NDDDSample.Domain.Shared
             this.spec2 = spec2;
         }
 
-        #region Overrides of AbstractSpecification<T>
-
         /// <summary>
         /// Check if t is satisfied by the specification.
         /// </summary>
@@ -31,7 +29,5 @@ namespace NDDDSample.Domain.Shared
         {
             return spec1.IsSatisfiedBy(t) || spec2.IsSatisfiedBy(t);
         }
-
-        #endregion
     }
 }

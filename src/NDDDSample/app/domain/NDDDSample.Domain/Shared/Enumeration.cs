@@ -1,13 +1,9 @@
 ﻿namespace NDDDSample.Domain.Shared
 {
-    #region Usings
-
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
-
-    #endregion
 
     public abstract class Enumeration : IComparable
     {

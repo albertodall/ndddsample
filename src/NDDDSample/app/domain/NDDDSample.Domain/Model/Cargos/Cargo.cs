@@ -1,13 +1,9 @@
 namespace NDDDSample.Domain.Model.Cargos
 {
-    #region Usings
-
     using Handlings;
     using Infrastructure.Validations;
     using Locations;
     using Shared;
-
-    #endregion
 
     /// <summary>
     ///  Cargo (or freight) refers to goods or produce transported, 
@@ -38,21 +34,15 @@ namespace NDDDSample.Domain.Model.Cargos
     /// or not a cargo is misdirected, what the current status of the cargo is (on board carrier,
     /// in port etc), are captured in this aggregate.
     /// </summary>
-    public class Cargo : IEntity<Cargo>
+    public class Cargo : Entity<int>
     {
         private readonly Location origin;
         private readonly TrackingId trackingId;
         private Delivery delivery;
-        private int id;
         private Itinerary itinerary;
         private RouteSpecification routeSpecification;
 
-        #region Constr
-
-        protected Cargo()
-        {
-            // Needed by Hibernate
-        }
+        protected Cargo() { }
 
         public Cargo(TrackingId trackingId, RouteSpecification routeSpecification)
         {
@@ -67,54 +57,6 @@ namespace NDDDSample.Domain.Model.Cargos
 
             delivery = Delivery.DerivedFrom(this.routeSpecification, itinerary, HandlingHistory.EMPTY);
         }
-
-        #endregion
-
-        #region IEntity<Cargo> Members
-
-        /// <summary>
-        /// Entities compare by identity, not by attributes.
-        /// </summary>
-        /// <param name="other">The other entity.</param>
-        /// <returns>true if the identities are the same, regardles of other attributes.</returns>
-        public virtual bool SameIdentityAs(Cargo other)
-        {
-            return other != null && trackingId.SameValueAs(other.trackingId);
-        }
-
-        #endregion
-
-        #region Object's override
-
-        public override bool Equals(object obj)
-        {
-            if (this == obj)
-            {
-                return true;
-            }
-            if (obj == null || GetType() != obj.GetType())
-            {
-                return false;
-            }
-
-            var other = (Cargo) obj;
-            return SameIdentityAs(other);
-        }
-
-        public override int GetHashCode()
-        {
-            return trackingId.GetHashCode();
-        }
-
-
-        public override string ToString()
-        {
-            return trackingId.ToString();
-        }
-
-        #endregion
-
-        #region Props
 
         /// <summary>
         /// The tracking id is the identity of this entity, and is unique.
@@ -156,10 +98,6 @@ namespace NDDDSample.Domain.Model.Cargos
             get { return routeSpecification; }
         }
 
-        #endregion
-
-        #region Pub Methods
-
         /// <summary>
         /// Specifies a new route for this cargo.
         /// </summary>
@@ -189,8 +127,8 @@ namespace NDDDSample.Domain.Model.Cargos
         /// <summary>
         ///  Updates all aspects of the cargo aggregate status
         /// based on the current route specification, itinerary and handling of the cargo.
-        ///<p/>
-        ///When either of those three changes, i.e. when a new route is specified for the cargo,
+        /// <p/>
+        /// When either of those three changes, i.e. when a new route is specified for the cargo,
         /// the cargo is assigned to a route or when the cargo is handled, the status must be
         /// re-calculated.
         /// <p/>
@@ -208,7 +146,5 @@ namespace NDDDSample.Domain.Model.Cargos
             // and replace it with a new
             delivery = Delivery.DerivedFrom(RouteSpecification, Itinerary, handlingHistory);
         }
-
-        #endregion
     }
 }

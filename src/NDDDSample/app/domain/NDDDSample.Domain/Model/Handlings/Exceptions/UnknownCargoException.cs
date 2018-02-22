@@ -17,7 +17,7 @@
 
         public override string Message
         {
-            get { return "No cargo with tracking id " + trackingId.IdString + " exists in the system"; }
+            get { return $"No cargo with tracking id {trackingId.ID} exists in the system"; }
         }
     }
 }

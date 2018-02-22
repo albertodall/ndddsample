@@ -7,8 +7,6 @@
     /// <typeparam name="T">Object Type to test</typeparam>
     public abstract class AbstractSpecification<T> : ISpecification<T>
     {
-        #region ISpecification<T> Members
-
         /// <summary>
         /// Check if t is satisfied by the specification.
         /// </summary>
@@ -45,7 +43,5 @@
         {
             return new NotSpecification<T>(specification);
         }
-
-        #endregion
     }
 }

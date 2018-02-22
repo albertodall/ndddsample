@@ -1,15 +1,11 @@
 ﻿namespace NDDDSample.Domain.Model.Cargos
 {
-    #region Usings
-
     using Shared;
-
-    #endregion
 
     /// <summary>
     /// Represents the different transport statuses for a cargo.
     /// </summary>
-    public class TransportStatus : Enumeration, IValueObject<TransportStatus>
+    public class TransportStatus : Enumeration
     {
         public static readonly TransportStatus CLAIMED = new TransportStatus("CLAIMED");
         public static readonly TransportStatus IN_PORT = new TransportStatus("IN_PORT");
@@ -23,14 +19,5 @@
         /// <param name="name">Enum string name</param>
         private TransportStatus(string name)
             : base(name) {}
-
-        #region IValueObject<TransportStatus> Members
-
-        public bool SameValueAs(TransportStatus other)
-        {
-            return Equals(other);
-        }
-
-        #endregion
     }
 }

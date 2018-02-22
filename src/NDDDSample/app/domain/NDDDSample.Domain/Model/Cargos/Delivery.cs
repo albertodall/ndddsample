@@ -17,27 +17,22 @@
     /// The actual transportation of the cargo, as opposed to
     /// the customer requirement (RouteSpecification) and the plan (Itinerary). 
     /// </summary>
-    public class Delivery : IValueObject<Delivery>
+    public class Delivery : ValueObject<Delivery>
     {
-        #region Private props
-
         //TODO: atrosin revise ETA_UNKOWN = null
         public static readonly DateTime ETA_UNKOWN = DateTime.MinValue;
+
         private static HandlingActivity NO_ACTIVITY;
-        private readonly DateTime calculatedAt;
-        private readonly Voyage currentVoyage;
-        private readonly DateTime eta;
-        private readonly bool isUnloadedAtDestination;
-        private readonly HandlingEvent lastEvent;
-        private readonly Location lastKnownLocation;
-        private readonly bool misdirected;
-        private readonly HandlingActivity nextExpectedActivity;
-        private readonly RoutingStatus routingStatus;
-        private readonly TransportStatus transportStatus;
-
-        #endregion
-
-        #region Constr
+        public DateTime CalculatedAt { get; private set; }
+        public Voyage CurrentVoyage { get; private set; }
+        public DateTime ETA { get; private set; }
+        public bool IsUnloadedAtDestination { get; private set; }
+        public HandlingEvent LastEvent { get; private set; }
+        public Location LastKnownLocation { get; private set; }
+        public bool IsMisdirected { get; private set; }
+        public HandlingActivity NextExpectedActivity { get; private set; }
+        public RoutingStatus RoutingStatus { get; private set; }
+        public TransportStatus TransportStatus { get; private set; }
 
         /// <summary>
         /// Internal constructor.
@@ -45,91 +40,30 @@
         /// <param name="lastEvent">last event</param>
         /// <param name="itinerary">itinerary</param>
         /// <param name="routeSpecification">route specification</param>
-        private Delivery(HandlingEvent lastEvent, Itinerary itinerary, RouteSpecification routeSpecification)
+        public Delivery(HandlingEvent lastEvent, Itinerary itinerary, RouteSpecification routeSpecification)
         {
             NO_ACTIVITY = null;
-            calculatedAt = DateTime.Now;
-            this.lastEvent = lastEvent;
+            CalculatedAt = DateTime.Now;
+            LastEvent = lastEvent;
 
-            misdirected = CalculateMisdirectionStatus(itinerary);
-            routingStatus = CalculateRoutingStatus(itinerary, routeSpecification);
-            transportStatus = CalculateTransportStatus();
-            lastKnownLocation = CalculateLastKnownLocation();
-            currentVoyage = CalculateCurrentVoyage();
-            eta = CalculateEta(itinerary);
-            nextExpectedActivity = CalculateNextExpectedActivity(routeSpecification, itinerary);
-            isUnloadedAtDestination = CalculateUnloadedAtDestination(routeSpecification);
+            IsMisdirected = CalculateMisdirectionStatus(itinerary);
+            RoutingStatus = CalculateRoutingStatus(itinerary, routeSpecification);
+            TransportStatus = CalculateTransportStatus();
+            LastKnownLocation = CalculateLastKnownLocation();
+            CurrentVoyage = CalculateCurrentVoyage();
+            ETA = CalculateEta(itinerary);
+            NextExpectedActivity = CalculateNextExpectedActivity(routeSpecification, itinerary);
+            IsUnloadedAtDestination = CalculateUnloadedAtDestination(routeSpecification);
+
+            RegisterProperty(p => p.LastEvent);
+            RegisterProperty(p => p.IsMisdirected);
+            RegisterProperty(p => p.TransportStatus);
+            RegisterProperty(p => p.LastKnownLocation);
+            RegisterProperty(p => p.CurrentVoyage);
+            RegisterProperty(p => p.ETA);
+            RegisterProperty(p => p.NextExpectedActivity);
+            RegisterProperty(p => p.IsUnloadedAtDestination);
         }
-
-        protected Delivery()
-        {
-            // Needed by Hibernate
-        }
-
-        #endregion
-
-        #region IValueObject<Delivery> Members
-
-        /// <summary>
-        /// Value objects compare by the values of their attributes, they don't have an identity.
-        /// </summary>
-        /// <param name="other">The other value object.</param>
-        /// <returns>true if the given value object's and this value object's attributes are the same.</returns>
-        public bool SameValueAs(Delivery other)
-        {
-            return other != null && new EqualsBuilder().
-                                        Append(transportStatus, other.transportStatus).
-                                        Append(lastKnownLocation, other.lastKnownLocation).
-                                        Append(currentVoyage, other.currentVoyage).
-                                        Append(misdirected, other.misdirected).
-                                        Append(eta, other.eta).
-                                        Append(nextExpectedActivity, other.nextExpectedActivity).
-                                        Append(isUnloadedAtDestination, other.isUnloadedAtDestination).
-                                        Append(routingStatus, other.routingStatus).
-                                        Append(calculatedAt, other.calculatedAt).
-                                        Append(lastEvent, other.lastEvent).
-                                        IsEquals();
-        }
-
-        #endregion
-
-        #region Object's override
-
-        public override bool Equals(object obj)
-        {
-            if (this == obj)
-            {
-                return true;
-            }
-            if (obj == null || GetType() != obj.GetType())
-            {
-                return false;
-            }
-
-            Delivery other = (Delivery) obj;
-
-            return SameValueAs(other);
-        }
-
-        public override int GetHashCode()
-        {
-            return new HashCodeBuilder().
-                Append(transportStatus).
-                Append(lastKnownLocation).
-                Append(currentVoyage).
-                Append(misdirected).
-                Append(eta).
-                Append(nextExpectedActivity).
-                Append(isUnloadedAtDestination).
-                Append(routingStatus).
-                Append(calculatedAt).
-                Append(lastEvent).
-                ToHashCode();
-        }
-
-        #endregion
-
-        #region Internal Methods
 
         /// <summary>
         /// Creates a new delivery snapshot to reflect changes in routing, i.e.
@@ -143,7 +77,7 @@
         {
             Validate.NotNull(routeSpecification, "Route specification is required");
 
-            return new Delivery(lastEvent, itinerary, routeSpecification);
+            return new Delivery(LastEvent, itinerary, routeSpecification);
         }
 
         internal static Delivery DerivedFrom(RouteSpecification routeSpecification, Itinerary itinerary,
@@ -157,121 +91,33 @@
             return new Delivery(lastEvent, itinerary, routeSpecification);
         }
 
-        #endregion
-
-        #region Props
-
-        /// <summary>
-        /// Transport status
-        /// </summary>
-        public TransportStatus TransportStatus
-        {
-            get { return transportStatus; }
-        }
-
-        /// <summary>
-        /// Last known location of the cargo, or Location.UNKNOWN if the delivery history is empty.
-        /// </summary>
-        public Location LastKnownLocation
-        {
-            get { return DomainObjectUtils.NullSafe(lastKnownLocation, Location.UNKNOWN); }
-        }
-
-        /// <summary>
-        /// Current voyage.
-        /// </summary>
-        public Voyage CurrentVoyage
-        {
-            get { return DomainObjectUtils.NullSafe(currentVoyage, Voyage.NONE); }
-        }
-
-        /// <summary>
-        /// Estimated time of arrival
-        /// </summary>     
-        public bool IsMisdirected
-        {
-            get { return misdirected; }
-        }
-
-        /// <summary>
-        /// Estimated time of arrival
-        /// </summary>
-        public DateTime EstimatedTimeOfArrival
-        {
-            get
-            {
-                if (eta != ETA_UNKOWN)
-                {
-                    return eta;
-                }
-
-                return ETA_UNKOWN;
-            }
-        }
-
-        /// <summary>
-        /// The next expected handling activity.
-        /// </summary>
-        public HandlingActivity NextExpectedActivity
-        {
-            get { return nextExpectedActivity; }
-        }
-
-        /// <summary>
-        /// True if the cargo has been unloaded at the final destination.
-        /// </summary>
-        public bool IsUnloadedAtDestination
-        {
-            get { return isUnloadedAtDestination; }
-        }
-
-        /// <summary>
-        /// Routing status.
-        /// </summary>
-        /// <returns></returns>
-        public RoutingStatus RoutingStatus
-        {
-            get { return routingStatus; }
-        }
-
-        /// <summary>
-        /// When this delivery was calculated.
-        /// </summary>
-        public DateTime CalculatedAt
-        {
-            get { return calculatedAt; }
-        }
-
-        #endregion
-
-        #region Private Methods
-
         // --- Internal calculations below ---
+
         // TODO add currentCarrierMovement (?)
         private TransportStatus CalculateTransportStatus()
         {
             //TODO: atrosin revise the if pattern spagetti code
 
-            if (lastEvent == null)
+            if (LastEvent == null)
             {
                 return TransportStatus.NOT_RECEIVED;
             }
 
-            if (lastEvent.Type == HandlingType.LOAD)
+            if (LastEvent.Type == HandlingType.LOAD)
             {
                 return TransportStatus.ONBOARD_CARRIER;
             }
 
-            bool isInPort = lastEvent.Type == HandlingType.UNLOAD
-                            || lastEvent.Type == HandlingType.RECEIVE
-                            || lastEvent.Type == HandlingType.CUSTOMS;
+            bool isInPort = LastEvent.Type == HandlingType.UNLOAD
+                            || LastEvent.Type == HandlingType.RECEIVE
+                            || LastEvent.Type == HandlingType.CUSTOMS;
 
             if (isInPort)
             {
                 return TransportStatus.IN_PORT;
             }
 
-            if (lastEvent.Type == HandlingType.CLAIM)
+            if (LastEvent.Type == HandlingType.CLAIM)
             {
                 return TransportStatus.CLAIMED;
             }
@@ -281,29 +127,29 @@
 
         private Location CalculateLastKnownLocation()
         {
-            if (lastEvent != null)
+            if (LastEvent != null)
             {
-                return lastEvent.Location;
+                return LastEvent.Location;
             }
-            return null;
+            return Location.UNKNOWN;
         }
 
         private Voyage CalculateCurrentVoyage()
         {
-            if (transportStatus.Equals(TransportStatus.ONBOARD_CARRIER) && lastEvent != null)
+            if (TransportStatus == TransportStatus.ONBOARD_CARRIER && LastEvent != null)
             {
-                return lastEvent.Voyage;
+                return LastEvent.Voyage;
             }
-            return null;
+            return Voyage.NONE;
         }
 
         private bool CalculateMisdirectionStatus(Itinerary itinerary)
         {
-            if (lastEvent == null)
+            if (LastEvent == null)
             {
                 return false;
             }
-            return !itinerary.IsExpected(lastEvent);
+            return !itinerary.IsExpected(LastEvent);
         }
 
         private DateTime CalculateEta(Itinerary itinerary)
@@ -324,16 +170,16 @@
                 return NO_ACTIVITY;
             }
 
-            if (lastEvent == null)
+            if (LastEvent == null)
             {
-                return new HandlingActivity(HandlingType.RECEIVE, routeSpecification.Origin);
+                return new HandlingActivity(HandlingType.RECEIVE, routeSpecification.Origin, CurrentVoyage);
             }
 
-            if (lastEvent.Type == HandlingType.LOAD)
+            if (LastEvent.Type == HandlingType.LOAD)
             {
                 foreach (Leg leg in itinerary.Legs)
                 {
-                    if (leg.LoadLocation.SameIdentityAs(lastEvent.Location))
+                    if (leg.LoadLocation == LastEvent.Location)
                     {
                         return new HandlingActivity(HandlingType.UNLOAD, leg.UnloadLocation,
                                                     leg.Voyage);
@@ -343,12 +189,12 @@
                 return NO_ACTIVITY;
             }
 
-            if (lastEvent.Type == HandlingType.UNLOAD)
+            if (LastEvent.Type == HandlingType.UNLOAD)
             {
                 for (IEnumerator<Leg> it = itinerary.Legs.GetEnumerator(); it.MoveNext();)
                 {
                     Leg leg = it.Current;
-                    if (leg.UnloadLocation.SameIdentityAs(lastEvent.Location))
+                    if (leg.UnloadLocation == LastEvent.Location)
                     {
                         if (it.MoveNext())
                         {
@@ -356,13 +202,13 @@
                             return new HandlingActivity(HandlingType.LOAD, nextLeg.LoadLocation,
                                                         nextLeg.Voyage);
                         }
-                        return new HandlingActivity(HandlingType.CLAIM, leg.UnloadLocation);
+                        return new HandlingActivity(HandlingType.CLAIM, leg.UnloadLocation, CurrentVoyage);
                     }
                 }
                 return NO_ACTIVITY;
             }
 
-            if (lastEvent.Type == HandlingType.RECEIVE)
+            if (LastEvent.Type == HandlingType.RECEIVE)
             {
                 IEnumerator<Leg> enumerator = itinerary.Legs.GetEnumerator();
                 enumerator.MoveNext();
@@ -370,7 +216,7 @@
                 return new HandlingActivity(HandlingType.LOAD, firstLeg.LoadLocation, firstLeg.Voyage);
             }
 
-            if (lastEvent.Type == HandlingType.CLAIM)
+            if (LastEvent.Type == HandlingType.CLAIM)
             {
                 //DO nothing
             }
@@ -396,16 +242,14 @@
 
         private bool CalculateUnloadedAtDestination(RouteSpecification routeSpecification)
         {
-            return lastEvent != null &&
-                   HandlingType.UNLOAD.SameValueAs(lastEvent.Type) &&
-                   routeSpecification.Destination.SameIdentityAs(lastEvent.Location);
+            return LastEvent != null &&
+                   HandlingType.UNLOAD == LastEvent.Type &&
+                   routeSpecification.Destination == LastEvent.Location;
         }
 
         private bool IsOnTrack()
         {
-            return routingStatus.Equals(RoutingStatus.ROUTED) && !misdirected;
+            return RoutingStatus == RoutingStatus.ROUTED && !IsMisdirected;
         }
-
-        #endregion
     }
 }
